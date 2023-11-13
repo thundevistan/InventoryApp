@@ -35,6 +35,14 @@ class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
 		val newItem = getNewItemEntry(itemName, itemPrice, itemCount)
 		insertItem(newItem)
 	}
+
+	// AddItemFragment 의 EditText 가 공백인지 판별 -> 프래그먼트가 아닌 ViewModel에서 실행해야 한다
+	fun isEntryValid(itemName: String, itemPrice: String, itemCount: String): Boolean {
+		if (itemName.isBlank() || itemPrice.isBlank() || itemCount.isBlank()) {
+			return false
+		}
+		return true
+	}
 }
 
 // Tip: ViewModel 팩토리는 대부분 상용구 코드이므로 향후 ViewModel 팩토리에서 이 코드를 재사용할 수 있다
