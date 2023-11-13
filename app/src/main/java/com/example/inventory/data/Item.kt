@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * 1. data 클래스의 이점: 컴파일러가 toString(), copy(), equals() 와 같은 유틸리티를 자동으로 생성
+ * 1. 데이터 클래스의 이점: 컴파일러가 toString(), copy(), equals() 와 같은 유틸리티를 자동으로 생성
  * 2. Entity 클래스의 파라미터가 Entity fields 가 된다
  * 3. tableName 인수는 선택사항이지만 사용하는 것을 권장
  */
