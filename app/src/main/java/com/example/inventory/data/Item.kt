@@ -3,6 +3,7 @@ package com.example.inventory.data
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.text.NumberFormat
 
 /**
  * 1. 데이터 클래스의 이점: 컴파일러가 toString(), copy(), equals() 와 같은 유틸리티를 자동으로 생성
@@ -20,3 +21,9 @@ data class Item (
 	@ColumnInfo(name = "quantity")
 	val quantityInStock: Int
 )
+
+/**
+ * 1. 확장 함수로 통화 형식을 지정
+ * 2. 일반적으로 데이터 형식을 지정하기 위해 데이터를 나타내는 Entity 클래스를 변경하는 것은 적절치 않음
+ */
+fun Item.getFormattedPrice(): String = NumberFormat.getCurrencyInstance().format(itemPrice)
