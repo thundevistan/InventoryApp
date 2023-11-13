@@ -1,7 +1,9 @@
 package com.example.inventory
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.inventory.data.Item
 import com.example.inventory.data.ItemDao
@@ -13,6 +15,8 @@ import kotlinx.coroutines.launch
  * 3. 주 생성자로 DAO 객체를 받는다 -> ViewModelFactory 구현이 필요
  */
 class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
+
+	val allItems: LiveData<List<Item>> = itemDao.getItems().asLiveData()    // Flow -> LiveData 를 위해 asLiveData()
 
 	// 실질적으로 DAO 의 매소드를 사용하는 부분
 	private fun insertItem(item: Item) {
