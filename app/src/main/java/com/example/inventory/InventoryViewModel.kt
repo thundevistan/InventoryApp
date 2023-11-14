@@ -16,9 +16,10 @@ import kotlinx.coroutines.launch
  */
 class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
 
-	val allItems: LiveData<List<Item>> = itemDao.getItems().asLiveData()    // Flow -> LiveData 를 위해 asLiveData()
+	val allItems: LiveData<List<Item>> =
+		itemDao.getItems().asLiveData()    // Flow -> LiveData 를 위해 asLiveData()
 
-	// 실질적으로 DAO 의 매소드를 사용하는 부분
+	// 직접적으로 DAO 의 insert 메소드 사용
 	private fun insertItem(item: Item) {
 		viewModelScope.launch {
 			itemDao.insert(item)
@@ -48,8 +49,36 @@ class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
 		return true
 	}
 
-	fun retrieveItem(id: Int) : LiveData<Item> {
+	// id 에 해당하는 Item 객체를 반환
+	fun retrieveItem(id: Int): LiveData<Item> {
 		return itemDao.getItem(id).asLiveData()
+	}
+
+	// 직접적으로 DAO 의 update 메소드 사용
+	private fun updateItem(item: Item) {
+		viewModelScope.launch {
+			itemDao.update(item)
+		}
+	}
+
+	// 재고가 0 초과일 경우 (재고 -= 1) 씩 update
+	fun sellItem(item: Item) {
+		if (item.quantityInStock > 0) {
+			val newItem = item.copy(quantityInStock = item.quantityInStock - 1)
+			updateItem(newItem)
+		}
+	}
+
+	// 재고가 0 미만일 경우 false
+	fun isStockAvailable(item: Item): Boolean {
+		return (item.quantityInStock > 0)
+	}
+
+	// 직접적으로 DAO 의 delete 메소드 사용
+	fun deleteItem(item: Item) {
+		viewModelScope.launch {
+			itemDao.delete(item)
+		}
 	}
 }
 
