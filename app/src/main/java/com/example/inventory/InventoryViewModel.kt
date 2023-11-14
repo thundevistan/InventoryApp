@@ -80,6 +80,30 @@ class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
 			itemDao.delete(item)
 		}
 	}
+
+	private fun getUpdatedItemEntry(
+		itemId: Int,
+		itemName: String,
+		itemPrice: String,
+		itemCount: String
+	): Item {
+		return Item(
+			id = itemId,
+			itemName = itemName,
+			itemPrice = itemPrice.toDouble(),
+			quantityInStock = itemCount.toInt()
+		)
+	}
+
+	fun updateItem(
+		itemId: Int,
+		itemName: String,
+		itemPrice: String,
+		itemCount: String
+	) {
+		val updatedItem = getUpdatedItemEntry(itemId, itemName, itemPrice, itemCount)
+		updateItem(updatedItem)
+	}
 }
 
 // Tip: ViewModel 팩토리는 대부분 상용구 코드이므로 향후 ViewModel 팩토리에서 이 코드를 재사용할 수 있다

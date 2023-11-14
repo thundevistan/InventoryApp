@@ -79,9 +79,23 @@ class AddItemFragment : Fragment() {
 		}
 	}
 
+	private fun updateItem() {
+		if (isEntryValid()) {
+			viewModel.updateItem(
+				this.navigationArgs.itemId,
+				this.binding.itemName.text.toString(),
+				this.binding.itemPrice.text.toString(),
+				this.binding.itemCount.text.toString()
+			)
+			val action = AddItemFragmentDirections.actionAddItemFragmentToItemListFragment()
+			findNavController().navigate(action)
+		}
+	}
+
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		// id 가 0 미만 == 새로 추가하는 데이터
 		val id = navigationArgs.itemId
 		if (id > 0) {
 			viewModel.retrieveItem(id).observe(this.viewLifecycleOwner) { selectedItem ->
@@ -119,6 +133,8 @@ class AddItemFragment : Fragment() {
 		 *
 		 * 8. BufferType 속성은 최소 버퍼 타입을 지정하는 것이므로, Editable 을 지정할 경우 셋 중 아무거나 타입 변환하여 사용할 수 있다
 		 */
+
+		saveAction.setOnClickListener { updateItem() }
 	}
 
 	override fun onDestroyView() {
