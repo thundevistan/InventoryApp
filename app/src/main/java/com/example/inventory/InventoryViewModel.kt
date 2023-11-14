@@ -47,6 +47,10 @@ class InventoryViewModel(private val itemDao: ItemDao) : ViewModel() {
 		}
 		return true
 	}
+
+	fun retrieveItem(id: Int) : LiveData<Item> {
+		return itemDao.getItem(id).asLiveData()
+	}
 }
 
 // Tip: ViewModel 팩토리는 대부분 상용구 코드이므로 향후 ViewModel 팩토리에서 이 코드를 재사용할 수 있다
